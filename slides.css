@@ -1,2 +1,6 @@
 @import url("./reveal.js/css/theme/night.css");
 
+.reveal pre > code,
+.reveal pre { background-color: #111111; }
+.reveal h1 { font-size: 250%; }
+.reveal pre > code { font-size: 140%; line-height: 160%; }

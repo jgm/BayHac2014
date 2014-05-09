@@ -77,7 +77,18 @@ images/first-pandoc-web-page.png
 - Text.Pandoc.Templates
 - reading data files
 
+----
+
 Example:
+
+```haskell
+  let doc0 = M.foldWithKey setMeta doc metadata
+  let doc1 = foldr ($) doc0 transforms
+  doc2 <- foldrM ($) doc1 $ map ($ [writerName']) plugins
+
+  let writeBinary :: B.ByteString -> IO ()
+      writeBinary = B.writeFile (UTF8.encodePath outputFile)
+```
 
 Create a Word document and a text email based on input from JSON.
 

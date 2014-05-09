@@ -5,7 +5,7 @@ ALL=slides.html
 all: $(ALL)
 
 slides.html : slides.txt
-	pandoc $< -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED)
+	pandoc $< -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
 
 clean:
 	rm $(ALL)
