@@ -107,4 +107,5 @@ Create a Word document and a text email based on input from JSON.
 
 # Exercises
 
+(have a handout)
 
