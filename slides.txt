@@ -1,0 +1,7 @@
+% Pandoc for Haskell Hackers
+% John MacFarlane
+% BayHack 2014
+
+# My slide
+
+ok
