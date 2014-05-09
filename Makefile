@@ -4,8 +4,8 @@ ALL=slides.html
 
 all: $(ALL)
 
-%.html : %.txt
-	pandoc $< -o $@ -t revealjs --css slides.css -S
+slides.html : slides.txt
+	pandoc $< -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED)
 
 clean:
 	rm $(ALL)
