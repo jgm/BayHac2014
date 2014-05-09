@@ -2,6 +2,98 @@
 % John MacFarlane
 % BayHack 2014
 
-# My slide
+# What is pandoc?
 
-ok
+- what does it do?
+- formats
+- syntax extensions
+  tables, footnotes, fancy list markers, line blocks, fenced code,
+    etc.
+
+- note:
+* built-in smart quotes, highlighting
+* tex macros work even in other formats
+* tex math works in Docx
+* citations, all formats!, with pandoc-citeproc
+  (demo on a man page.)
+* templates, metadata
+
+- description
+
+- demos (run these live)
+
+- popularity stats
+
+debian popcon
+ghc 4999
+pandoc 1997
+darcs 1908
+xmonad 1733
+
+hackage
+darcs 3420
+xmonad 6432
+pandoc 26220
+
+googlecode
+pandoc 1.12.3 OSX 13513
+Windows 17226
+
+
+# How did I get into this?
+
+- grew up programming kim-1, trs-80
+- later worked at LANL with C and pascal
+- some programming in windows 3.0 and 3.1
+- then fall out of it for a decade
+- got back into it with linux, python -> lisp -> haskell (Greg Restall)
+- wanted to try out parsec.  what can i parse?
+- used RST, not happy with tools. had seen markdown - let's write a parser.
+- before long, it worked.  then:  need to convert my old stuff from rst.
+  rst reader.  need to write to rst, in case i want to go back.  rst
+  writer.  and of course I needed LaTeX.  then I was off and running.
+images/first-pandoc-web-page.png
+- Recai Oktas, debian developer
+- then there were USERS, and bug reports, and I'm a perfectionist.
+- sublibraries:
+
+  highlighting-kate (wanted to avoid shelling out)
+  zip-archive
+  texmath
+  pandoc-citeproc (originally Andrea Rossato's citeproc-hs)
+  pandoc-types
+  pandoc-templates
+
+- because i started writing pandoc before i really knew haskell,
+  some of the code is not so great.  I try to improve it gradually.
+- because i started before we had Text, everything is String - would
+  be great to get this changed!
+
+# A tour of pandoc's API
+
+- Text.Pandoc.Definition (note, in pandoc-types)
+- Text.Pandoc.Builder
+- readers, writers, and Text.Pandoc.Options
+- Text.Pandoc.Templates
+- reading data files
+
+Example:
+
+Create a Word document and a text email based on input from JSON.
+
+# Customizing pandoc with filters
+
+- Text.Pandoc.Generic and Text.Pandoc.Walk
+  tree transformations!  simple example:  emph as ALL CAPS
+  queries:  list all the citation keys in a LaTeX document
+- Text.Pandoc.JSON - serialization
+- pandoc will spit out 'json', and you can read this and transform
+  it as a pipe.
+- to make this easier, toJSONFilter!
+- simple filter:  emph as ALL CAPS
+- now:  emph as SMALLCAPS in LaTeX and HTML, ALLCAPS otherwise
+- diagrams filter (byorgey?)
+
+# Exercises
+
+
