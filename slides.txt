@@ -22,6 +22,11 @@
 
 - demos (run these live)
 
+- size: around 28k lines of Haskell code not inc dependent libs like
+  texmath, h-k.  h-k is 1700 of non-generated code. texmath
+  2000, zip-archive 750, pandoc-citeproc 7250.  So total almost
+  40k.
+
 - popularity stats
 
 github stars 2161
@@ -41,6 +46,11 @@ googlecode
 pandoc 1.12.3 OSX 13513
 Windows 17226
 
+
+Pandoc as a virus that spreads Haskell -- many install the HP
+solely to install pandoc.
+
+images/virus1-4.png
 
 # How did I get into this?
 
