@@ -24,6 +24,8 @@
 
 - popularity stats
 
+github stars 2161
+
 debian popcon
 ghc 4999
 pandoc 1997
