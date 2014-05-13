@@ -4,7 +4,7 @@ pandoc --smart
 
 pandoc --to latex
 
-pandoc --from html --to markdown
+pandoc --to mediawiki
 
 pandoc -f latex -t markdown example.tex
 
@@ -52,4 +52,9 @@ pandoc -s sample3.txt -s -o sample3.html
 pandoc -s sample3.txt -s -o sample3.pdf
 pandoc -s sample3.txt -s -o sample3.docx
 pandoc -s sample3.txt -s -o sample3.html --highlight-style=monochrome
+
+# literate haskell
+
+pandoc paste.lhs -f markdown+lhs -t html -s -o paste.html
+pandoc paste.lhs -f markdown+lhs -t latex+lhs -s -o paste.lhs.tex
 
