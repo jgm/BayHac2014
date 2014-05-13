@@ -1,0 +1,55 @@
+pandoc # from stdin
+
+pandoc --smart
+
+pandoc --to latex
+
+pandoc --from html --to markdown
+
+pandoc -f latex -t markdown example.tex
+
+pandoc --help # see formats, options
+
+pandoc --standalone --smart --toc -o r.html -t html5 README
+
+pandoc --standalone --smart --toc -o r.html -t html5 --css my.css README
+
+pandoc -D html5 > my.html5
+
+# edit my.html5
+# add
+<ul class="versions">
+$for(version)$
+<li>Version $version.number$ ($version.date$): $version.log$</li>
+$endfor$
+</ul>
+
+pandoc -s -S --template my.html5 -t html5 sample1.txt -o sample1.html --mathjax
+
+pandoc sample1.txt -o sample1.pdf
+
+pandoc sample1.txt -o sample1.docx
+
+# now add some citations
+
+vim sample2.txt
+vim sample2.bib
+
+pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.docx
+
+# and try again with different csl
+
+pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.docx \
+  -Vcsl=chicago-fullnote-bibliography.csl
+
+# then try a different format
+
+pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.org
+
+# source code highlighting
+
+pandoc -s sample3.txt -s -o sample3.html
+pandoc -s sample3.txt -s -o sample3.pdf
+pandoc -s sample3.txt -s -o sample3.docx
+pandoc -s sample3.txt -s -o sample3.html --highlight-style=monochrome
+

@@ -1,0 +1,28 @@
+---
+title: My demonstration
+author:
+ - Kurt Gödel
+ - Haskell Curry
+version:
+ - number: 1.0
+   date: July 13, 1945
+   log:  Initial commit
+ - number: 1.1
+   date: August 14,1946
+   log:  Added some math
+---
+
+# Here is some math
+
+$$
+\lim_{h\to0} \frac{\sin(x+h) - \sin(x)}{h} = \cos x .
+$$
+Also $\limsup_{n\to\infty} a_n$.
+
+$$
+   \nabla \cdot \vec{v} =
+   \frac{\partial v_x}{\partial x} +
+   \frac{\partial v_y}{\partial y} +
+   \frac{\partial v_z}{\partial z}
+$$
+

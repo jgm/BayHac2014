@@ -1,0 +1,15 @@
+body {
+  font-size: 120%;
+  font-family: Arial, sans-serif;
+  line-height: 1.5em;
+  position: absolute;
+  left: 20em;
+  width: 32em;
+}
+
+nav#TOC {
+  position: absolute;
+  left: -20em;
+  width: 18em;
+}
+

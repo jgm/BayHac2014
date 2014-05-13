@@ -1,0 +1,14 @@
+Here is some Haskell:
+
+``` {.haskell .numberLines}
+runDfa :: (Eq a) => DirectDfa a -> [a] -> Bool
+runDfa (DirectState final trans) []
+  = final
+runDfa (DirectState final trans) (x:xs)
+  = case [ s | (x',s) <- trans, x == x' ] of
+        []    -> False
+        (s:_) -> runDfa s xs
+```
+
+And inline: `fmap (++ "foo")`{.haskell}.
+
