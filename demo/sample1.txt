@@ -19,6 +19,10 @@ $$
 $$
 Also $\limsup_{n\to\infty} a_n$.
 
+\newcommand{\tup}[1]{\langle #1\rangle}
+
+You can define macros!  $\tup{x,y}$
+
 $$
    \nabla \cdot \vec{v} =
    \frac{\partial v_x}{\partial x} +

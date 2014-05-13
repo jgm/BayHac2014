@@ -2,89 +2,134 @@
 % John MacFarlane
 % BayHack 2014
 
-# What is pandoc?
+# Why am I here?
 
-- what does it do?
-- formats
-- syntax extensions
-  tables, footnotes, fancy list markers, line blocks, fenced code,
-    etc.
+<div class="notes">
+I'm a philosophy professor.  And this is just the sort of question
+you expect a philosophy professor to ask---but I mean it in the
+most mundane sense.  I have no formal background whatsoever
+in computer science.  I think I'm a decent Haskell programmer, but nothing
+close to an expert.  So why am I giving a talk at a Haskell hackathon?
+</div>
 
-- note:
-* built-in smart quotes, highlighting
-* tex macros work even in other formats
-* tex math works in Docx
-* citations, all formats!, with pandoc-citeproc
-  (demo on a man page.)
-* templates, metadata
+# The virus
 
-- description
+<div class="notes">
+Because I created the most effective virus for spreading
+GHC installations: pandoc.
+</div>
 
-- demos (run these live)
+| ![](images/virus1.png)
+| ![](images/virus2.png)
+| ![](images/virus3.png)
+| ![](images/virus4.png)
 
-- size: around 28k lines of Haskell code not inc dependent libs like
-  texmath, h-k.  h-k is 1700 of non-generated code. texmath
-  2000, zip-archive 750, pandoc-citeproc 7250.  So total almost
-  40k.
+# Pandoc today
 
-- popularity stats
+package    popcon    hackage
+-------- --------  ---------
+pandoc       1997      26220
+darcs        1908       3420
+xmonad       1733       6432
+----------------------------
 
-github stars 2161
+![](images/downloads-google.png)
 
-debian popcon
-ghc 4999
-pandoc 1997
-darcs 1908
-xmonad 1733
+------
 
-hackage
-darcs 3420
-xmonad 6432
-pandoc 26220
+![Debian popcon graph](images/popcon-graph.png)
 
-googlecode
-pandoc 1.12.3 OSX 13513
-Windows 17226
+# How I got started
 
+![trs80](images/TRS80.jpg) ![kim1](images/KIM1.jpg)
 
-Pandoc as a virus that spreads Haskell -- many install the HP
-solely to install pandoc.
+<div class="notes">
+I grew up programming video games in BASIC on a TRS-80 and 6502 assembly
+on a KIM-1 that my grandfather bought (he must have been among the first
+microcomputer hobbyists).  In college I worked summers as a programmer,
+writing scientific software in Pascal on VAX workstations with whopping
+20 MB hard drives.
 
-images/virus1-4.png
+I got out of programming when GUIs took over, but started to get
+interested again in 2004 after installing linux.  I messed around with
+python and lisp and ruby, and wrote a website for my department.  Then
+in 2005, an Australian philosopher/logician colleague of mine, Greg
+Restall, mentioned that his favorite programming language was Haskell.
+So I checked it out, and found that I liked it too.
 
-# How did I get into this?
+I started messing around with parsec, the parser combinator library.
+I asked myself, "what would be fun to try to parse?"  I'd gotten
+interested in lightweight markup languages and was using
+reStructuredText for lecture notes and handouts.  And I'd just seen
+this "markdown" thing that John Gruber introduced.  So I said to
+myself, "Self, let's try writing a markdown parser."  That seemed
+like a good challenge, because markdown is about as parser-unfriendly a
+language as you can get.  An asterisk, for example, can be either an
+open or close tag for emphasis, or *part of* an open or close tag for
+strong emphasis, or just a literal asterisk---and which it is often
+depends on what comes after.  At the time, the only markdown parsers
+around were just big regex transformations.  Parsec worked well for
+this.  Before long I had a working parser.  It was considerably faster
+and more accurate than John Gruber's perl script.  And it was much
+easier to maintain and extend.
 
-- grew up programming kim-1, trs-80
-- later worked at LANL with C and pascal
-- some programming in windows 3.0 and 3.1
-- then fall out of it for a decade
-- got back into it with linux, python -> lisp -> haskell (Greg Restall)
-- wanted to try out parsec.  what can i parse?
-- used RST, not happy with tools. had seen markdown - let's write a parser.
-- before long, it worked.  then:  need to convert my old stuff from rst.
-  rst reader.  need to write to rst, in case i want to go back.  rst
-  writer.  and of course I needed LaTeX.  then I was off and running.
-images/first-pandoc-web-page.png
-- Recai Oktas, debian developer
-- then there were USERS, and bug reports, and I'm a perfectionist.
-- sublibraries:
+One thing led to another.  I wasn't entirely happy with the docutils
+(reStructuredText) tool chain, and I saw some advantages to "making my
+own tools" for writing.  I needed to convert my existing documents in
+reStructuredText to markdown, so I added a reStructuredText parser
+and a markdown writer.  I needed output in LaTeX as well as HTML, so
+I added a LaTeX writer.  I needed footnotes, inline LaTeX math, and
+other features, so I extended pandoc's markdown dialect.  The project
+provided hours of pleasant procrastination.
+</div>
 
-  highlighting-kate (wanted to avoid shelling out)
-  zip-archive
-  texmath
-  pandoc-citeproc (originally Andrea Rossato's citeproc-hs)
-  pandoc-types
-  pandoc-templates
+-----
 
-- because i started writing pandoc before i really knew haskell,
-  some of the code is not so great.  I try to improve it gradually.
-- because i started before we had Text, everything is String - would
-  be great to get this changed!
+![](images/first-pandoc-web-page.png)
+
+<div class="notes">
+Then something possessed me to release it. In August 2006 I released the
+first version.  Not long after that, a Debian developer, Recai Oktas,
+contacted me offering to add it to debian.  So I became an open-source
+developer, and I've worked on pandoc in my spare time ever since.
+</div>
+
+# Libraries beget libraries
+
+> - highlighting-kate
+> - zip-archive
+> - texmath
+> - pandoc-citeproc (citeproc-hs)
+> - gitit
+> - filestore
+
+# The command-line tool
+
+A quick demonstration.
+
+<div class="notes">
+Our goal is to learn how to use pandoc as a library,
+but let's first have a quick demo of the command-line tool.
+
+Run through `script.txt` in `demo/`.
+</div>
 
 # A tour of pandoc's API
 
-- Text.Pandoc.Definition (note, in pandoc-types)
-- Text.Pandoc.Builder
+## pandoc
+
+- [Text.Pandoc](doc/pandoc/Text-Pandoc.html)
+
+# A tour of pandoc's API
+
+## pandoc-types
+
+- [Text.Pandoc.Definition](doc/pandoc-types/Text-Pandoc-Definition.html)
+- [Text.Pandoc.Builder](doc/pandoc-types/Text-Pandoc-Builder.html)
+
+
+
+
 - readers, writers, and Text.Pandoc.Options
 - Text.Pandoc.Templates
 - reading data files
