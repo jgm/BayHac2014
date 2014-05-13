@@ -58,3 +58,5 @@ pandoc -s sample3.txt -s -o sample3.html --highlight-style=monochrome
 pandoc paste.lhs -f markdown+lhs -t html -s -o paste.html
 pandoc paste.lhs -f markdown+lhs -t latex+lhs -s -o paste.lhs.tex
 
+# mention haddock (but this needs updating)
+
