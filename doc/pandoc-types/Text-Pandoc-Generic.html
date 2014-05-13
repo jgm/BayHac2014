@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Text.Pandoc.Generic</title><link href="ocean.css" rel="stylesheet" type="text/css" title="Ocean" /><script src="haddock-util.js" type="text/javascript"></script><script type="text/javascript">//<![CDATA[
+window.onload = function () {pageLoad();setSynopsis("mini_Text-Pandoc-Generic.html");};
+//]]>
+</script></head><body><div id="package-header"><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul><p class="caption">pandoc-types-1.12.3.3: Types for representing a structured document</p></div><div id="content"><div id="module-header"><table class="info"><tr><th>Copyright</th><td>Copyright (C) 2006-2010 John MacFarlane</td></tr><tr><th>License</th><td>GNU GPL, version 2 or above</td></tr><tr><th>Maintainer</th><td>John MacFarlane &lt;jgm@berkeley.edu&gt;</td></tr><tr><th>Stability</th><td>alpha</td></tr><tr><th>Portability</th><td>portable</td></tr><tr><th>Safe Haskell</th><td>None</td></tr><tr><th>Language</th><td>Haskell98</td></tr></table><p class="caption">Text.Pandoc.Generic</p></div><div id="description"><p class="caption">Description</p><div class="doc"><p>Generic functions for manipulating <code>Pandoc</code> documents.
+(Note:  the functions defined in <code>Text.Pandoc.Walk</code> should be used instead,
+when possible, as they are much faster.)</p><p>Here's a simple example, defining a function that replaces all the level 3+
+headers in a document with regular paragraphs in ALL CAPS:</p><pre>import Text.Pandoc.Definition
+import Text.Pandoc.Generic
+import Data.Char (toUpper)
+
+modHeader :: Block -&gt; Block
+modHeader (Header n _ xs) | n &gt;= 3 = Para $ bottomUp allCaps xs
+modHeader x = x
+
+allCaps :: Inline -&gt; Inline
+allCaps (Str xs) = Str $ map toUpper xs
+allCaps x = x
+
+changeHeaders :: Pandoc -&gt; Pandoc
+changeHeaders = bottomUp modHeader</pre><p><code><a href="Text-Pandoc-Generic.html#v:bottomUp">bottomUp</a></code> is so called because it traverses the <code>Pandoc</code> structure from
+bottom up. <code><a href="Text-Pandoc-Generic.html#v:topDown">topDown</a></code> goes the other way. The difference between them can be
+seen from this example:</p><pre>normal :: [Inline] -&gt; [Inline]
+normal (Space : Space : xs) = Space : xs
+normal (Emph xs : Emph ys : zs) = Emph (xs ++ ys) : zs
+normal xs = xs
+
+myDoc :: Pandoc
+myDoc =  Pandoc nullMeta
+ [ Para [Str &quot;Hi&quot;,Space,Emph [Str &quot;world&quot;,Space],Emph [Space,Str &quot;emphasized&quot;]]]</pre><p>Here we want to use <code><a href="Text-Pandoc-Generic.html#v:topDown">topDown</a></code> to lift <code>normal</code> to <code>Pandoc -&gt; Pandoc</code>.
+The top down strategy will collapse the two adjacent <code>Emph</code>s first, then
+collapse the resulting adjacent <code>Space</code>s, as desired. If we used <code><a href="Text-Pandoc-Generic.html#v:bottomUp">bottomUp</a></code>,
+we would end up with two adjacent <code>Space</code>s, since the contents of the
+two <code>Emph</code> inlines would be processed before the <code>Emph</code>s were collapsed
+into one.</p><pre>topDown normal myDoc ==
+  Pandoc nullMeta
+   [Para [Str &quot;Hi&quot;,Space,Emph [Str &quot;world&quot;,Space,Str &quot;emphasized&quot;]]]
+
+bottomUp normal myDoc ==
+  Pandoc nullMeta
+   [Para [Str &quot;Hi&quot;,Space,Emph [Str &quot;world&quot;,Space,Space,Str &quot;emphasized&quot;]]]</pre><p><code><a href="Text-Pandoc-Generic.html#v:bottomUpM">bottomUpM</a></code> is a monadic version of <code><a href="Text-Pandoc-Generic.html#v:bottomUp">bottomUp</a></code>.  It could be used,
+for example, to replace the contents of delimited code blocks with
+attribute <code>include=FILENAME</code> with the contents of <code>FILENAME</code>:</p><pre>doInclude :: Block -&gt; IO Block
+doInclude cb@(CodeBlock (id, classes, namevals) contents) =
+  case lookup &quot;include&quot; namevals of
+       Just f  -&gt; return . (CodeBlock (id, classes, namevals)) =&lt;&lt; readFile f
+       Nothing -&gt; return cb
+doInclude x = return x
+
+processIncludes :: Pandoc -&gt; IO Pandoc
+processIncludes = bottomUpM doInclude</pre><p><code><a href="Text-Pandoc-Generic.html#v:queryWith">queryWith</a></code> can be used, for example, to compile a list of URLs
+linked to in a document:</p><pre>extractURL :: Inline -&gt; [String]
+extractURL (Link _ (u,_)) = [u]
+extractURL (Image _ (u,_)) = [u]
+extractURL _ = []
+
+extractURLs :: Pandoc -&gt; [String]
+extractURLs = queryWith extractURL</pre></div></div><div id="synopsis"><p id="control.syn" class="caption expander" onclick="toggleSection('syn')">Synopsis</p><ul id="section.syn" class="hide" onclick="toggleSection('syn')"><li class="src short"><a href="#v:bottomUp">bottomUp</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; a) -&gt; b -&gt; b</li><li class="src short"><a href="#v:topDown">topDown</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; a) -&gt; b -&gt; b</li><li class="src short"><a href="#v:bottomUpM">bottomUpM</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Control-Monad.html#t:Monad">Monad</a> m, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; m a) -&gt; b -&gt; m b</li><li class="src short"><a href="#v:queryWith">queryWith</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Monoid.html#t:Monoid">Monoid</a> b, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> c) =&gt; (a -&gt; b) -&gt; c -&gt; b</li></ul></div><div id="interface"><h1>Documentation</h1><div class="top"><p class="src"><a name="v:bottomUp" class="def">bottomUp</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; a) -&gt; b -&gt; b</p><div class="doc"><p>Applies a transformation on <code>a</code>s to matching elements in a <code>b</code>,
+ moving from the bottom of the structure up.</p></div></div><div class="top"><p class="src"><a name="v:topDown" class="def">topDown</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; a) -&gt; b -&gt; b</p><div class="doc"><p>Applies a transformation on <code>a</code>s to matching elements in a <code>b</code>,
+ moving from the top of the structure down.</p></div></div><div class="top"><p class="src"><a name="v:bottomUpM" class="def">bottomUpM</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Control-Monad.html#t:Monad">Monad</a> m, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> b) =&gt; (a -&gt; m a) -&gt; b -&gt; m b</p><div class="doc"><p>Like <code><a href="Text-Pandoc-Generic.html#v:bottomUp">bottomUp</a></code>, but with monadic transformations.</p></div></div><div class="top"><p class="src"><a name="v:queryWith" class="def">queryWith</a> :: (<a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> a, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Monoid.html#t:Monoid">Monoid</a> b, <a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Data.html#t:Data">Data</a> c) =&gt; (a -&gt; b) -&gt; c -&gt; b</p><div class="doc"><p>Runs a query on matching <code>a</code> elements in a <code>c</code>.  The results
+ of the queries are combined using <code><a href="file:///usr/local/share/doc/ghc/html/libraries/base-4.7.0.0/Data-Monoid.html#v:mappend">mappend</a></code>.</p></div></div></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.14.2</p></div></body></html>
