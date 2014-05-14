@@ -1,6 +1,6 @@
 % Pandoc for Haskell Hackers
 % John MacFarlane
-% BayHack 2014
+% BayHac 2014
 
 # Why am I here?
 
@@ -12,7 +12,11 @@ in computer science.  I think I'm a decent Haskell programmer, but nothing
 close to an expert.  So why am I giving a talk at a Haskell hackathon?
 </div>
 
-# The virus
+# I created a virus...
+
+---
+
+# ...that spreads GHC
 
 <div class="notes">
 Because I created the most effective virus for spreading
@@ -24,22 +28,26 @@ GHC installations: pandoc.
 | ![](images/virus3.png)
 | ![](images/virus4.png)
 
-# Pandoc today
+----
 
-package    popcon    hackage
--------- --------  ---------
-pandoc       1997      26220
-darcs        1908       3420
-xmonad       1733       6432
-----------------------------
+
+           debian popcon            Hackage
+-------- --------------- ------------------
+pandoc              1997              26220
+darcs               1908               3420
+xmonad              1733               6432
+-------- --------------- ------------------
 
 ![](images/downloads-google.png)
 
-------
+<!--
 
 ![Debian popcon graph](images/popcon-graph.png)
 
-# How I got started
+-->
+
+
+# How did it happen?
 
 ![trs80](images/TRS80.jpg) ![kim1](images/KIM1.jpg)
 
@@ -116,38 +124,85 @@ Run through `script.txt` in `demo/`.
 
 # A tour of pandoc's API
 
-## pandoc
+# Readers and writers
 
 - [Text.Pandoc](doc/pandoc/Text-Pandoc.html)
 
-# A tour of pandoc's API
+<div class="notes">
 
-## pandoc-types
+Prelude> :m + Text.Pandoc
+Text.Pandoc> let doc = readMarkdown def "*hi*"
+Text.Pandoc> doc
+Pandoc (Meta {unMeta = fromList []}) [Para [Emph [Str "hi"]]]
+Text.Pandoc> writeLaTeX def doc
+"\\emph{hi}"
+Text.Pandoc> readMarkdown def{readerSmart = True} "dog's"
+Pandoc (Meta {unMeta = fromList []}) [Para [Str "dog\8217s"]]
+
+</div>
+
+# The Pandoc types
 
 - [Text.Pandoc.Definition](doc/pandoc-types/Text-Pandoc-Definition.html)
+
+# Builder
+
 - [Text.Pandoc.Builder](doc/pandoc-types/Text-Pandoc-Builder.html)
 
+...
 
+Concatenating lists is slow.  So we use special types `Inlines` and
+`Blocks` that wrap `Sequence`s of `Inline` and `Block` elements.
 
+# A simple example
 
-- readers, writers, and Text.Pandoc.Options
-- Text.Pandoc.Templates
-- reading data files
+Create a Word document based on input from JSON (`fuel.hs`).
 
-----
+# Transforming a Pandoc document
 
-Example:
+- [Text.Pandoc.Generic](doc/pandoc-types/Text-Pandoc-Generic.html)
+- [Text.Pandoc.Walk](doc/pandoc-types/Text-Pandoc-Walk.html)
+
+# Transforming a Pandoc document
 
 ```haskell
-  let doc0 = M.foldWithKey setMeta doc metadata
-  let doc1 = foldr ($) doc0 transforms
-  doc2 <- foldrM ($) doc1 $ map ($ [writerName']) plugins
+module AllCaps where
+import Text.Pandoc.Definition
+import Data.Char (toUpper)
 
-  let writeBinary :: B.ByteString -> IO ()
-      writeBinary = B.writeFile (UTF8.encodePath outputFile)
+allCaps :: Inline -> Inline
+allCaps (Str xs) = Str $ map toUpper xs
+allCaps x = x
+```
+. . .
+
+```
+% ghci AllCaps.hs
+*AllCaps > Text.Pandoc.Walk.walk allCaps $ Para [Emph [Str "hi"]]
+Para [Emph [Str "HI"]]
 ```
 
-Create a Word document and a text email based on input from JSON.
+# Customizing pandoc with JSON filters
+
+- [Text.Pandoc.JSON](doc/pandoc-types/Text-Pandoc-JSON.html)
+
+((picture))
+
+# A simple example
+
+```haskell
+-- pandoc --filter ./emphToCaps.hs
+import Text.Pandoc.JSON
+import Text.Pandoc.Walk
+import AllCaps (allCaps)
+
+emphToCaps :: Inline -> Inline
+emphToCaps (Emph xs) = Emph $ walk allCaps xs
+emphToCaps x = x
+
+main :: IO ()
+main = toJSONFilter emphToCaps
+```
 
 # Customizing pandoc with filters
 

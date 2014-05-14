@@ -1,5 +1,6 @@
 @import url("./reveal.js/css/theme/night.css");
 
+code span.dt { text-decoration: none; font-style: italic; }
 .reveal pre > code,
 .reveal pre { background-color: #111111; }
 .reveal h1 { font-size: 250%; }
