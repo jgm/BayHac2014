@@ -157,8 +157,7 @@ Concatenating lists is slow.  So we use special types `Inlines` and
 
 Here's a JSON data source about CNG fueling stations in the Chicago
 area:  [cng_fuel_chicago.json](cng_fuel_chicago.json.html).
-
-Boss says:  write me a letter in Word that lists all the stations
+Boss says:  write me a letter in Word listing all the stations
 that take the Voyager card.
 
 . . .
