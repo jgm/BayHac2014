@@ -16,8 +16,8 @@ data Station = Station{
 
 instance FromJSON Station where
     parseJSON (Object v) = Station <$>
-       (v .:? "street_address" .!= "") <*>
-       (v .:? "station_name" .!= "") <*>
+       v .: "street_address" <*>
+       v .: "station_name" <*>
        (words <$> (v .:? "cards_accepted" .!= ""))
     parseJSON _          = mzero
 

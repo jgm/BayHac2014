@@ -102,7 +102,7 @@ contacted me offering to add it to debian.  So I became an open-source
 developer, and I've worked on pandoc in my spare time ever since.
 </div>
 
-# Libraries beget libraries
+# Libraries begat libraries
 
 > - highlighting-kate
 > - zip-archive
@@ -149,14 +149,21 @@ Pandoc (Meta {unMeta = fromList []}) [Para [Str "dog\8217s"]]
 
 - [Text.Pandoc.Builder](doc/pandoc-types/Text-Pandoc-Builder.html)
 
-...
 
 Concatenating lists is slow.  So we use special types `Inlines` and
 `Blocks` that wrap `Sequence`s of `Inline` and `Block` elements.
 
 # A simple example
 
-Create a Word document based on input from JSON (`fuel.hs`).
+Here's a JSON data source about CNG fueling stations in the Chicago
+area:  [cng_fuel_chicago.json](cng_fuel_chicago.json.html).
+
+Boss says:  write me a letter in Word that lists all the stations
+that take the Voyager card.
+
+. . .
+
+No need to open Word for this job! [fuel.hs](./fuel.hs.html)
 
 # Transforming a Pandoc document
 
