@@ -189,11 +189,53 @@ allCaps x = x
 Para [Emph [Str "HI"]]
 ```
 
+# Filters
+
+Suppose we have a program that defines a transformation
+
+```haskell
+f :: Pandoc -> Pandoc
+```
+
+Since `Pandoc` has `Read` and `Show` instances, we can
+write a pipe like this:
+
+```haskell
+-- f.hs
+main = interact (show . f . read)
+```
+
+And use it thus:
+
+    pandoc -t native -s | runghc f.hs | pandoc -f native -s -t latex
+
+# JSON filters
+
+`Read` and `Show` are really slow.  Better to use JSON serialization
+of Pandoc:
+
+    pandoc -t json -s | runghc fjson.hs | pandoc -f json -s -t latex
+
+. . .
+
+To simplify this pattern, we added `--filter`:
+
+    pandoc -s -t latex --filter fjson.hs
+
 # Customizing pandoc with JSON filters
 
 - [Text.Pandoc.JSON](doc/pandoc-types/Text-Pandoc-JSON.html)
 
-((picture))
+`toJSONFilter` takes any function `a -> a` or `a -> [a]` or
+`a -> IO a`, where `a` is a Pandoc type, and turns it into a
+JSON pipe.
+
+```haskell
+import Text.Pandoc.JSON
+import AllCaps
+
+main = toJSONFilter allCaps
+```
 
 # A simple example
 
@@ -203,28 +245,56 @@ import Text.Pandoc.JSON
 import Text.Pandoc.Walk
 import AllCaps (allCaps)
 
-emphToCaps :: Inline -> Inline
-emphToCaps (Emph xs) = Emph $ walk allCaps xs
-emphToCaps x = x
+emphToCaps :: Inline -> [Inline]
+emphToCaps (Emph xs) = walk allCaps xs
+emphToCaps x = [x]
 
 main :: IO ()
 main = toJSONFilter emphToCaps
 ```
 
-# Customizing pandoc with filters
+# Making the output sensitive to format
 
-- Text.Pandoc.Generic and Text.Pandoc.Walk
-  tree transformations!  simple example:  emph as ALL CAPS
-  queries:  list all the citation keys in a LaTeX document
-- Text.Pandoc.JSON - serialization
-- pandoc will spit out 'json', and you can read this and transform
-  it as a pipe.
-- to make this easier, toJSONFilter!
-- simple filter:  emph as ALL CAPS
-- now:  emph as SMALLCAPS in LaTeX and HTML, ALLCAPS otherwise
-- diagrams filter (byorgey?)
+Emph as <span style="font-variant:small-caps;">SMALLCAPS</span>
+in LaTeX and HTML, ALLCAPS otherwise:
+
+```haskell
+-- pandoc --filter ./emphToCaps2.hs
+import Text.Pandoc.JSON
+import Text.Pandoc.Walk
+import AllCaps (allCaps)
+
+emphToCaps :: Maybe Format -> Inline -> [Inline]
+emphToCaps (Just f) (Emph xs)
+  | f == Format "html" || f == Format "latex" = [SmallCaps xs]
+emphToCaps _ (Emph xs) = walk allCaps xs
+emphToCaps _ x = [x]
+
+main :: IO ()
+main = toJSONFilter emphToCaps
+```
 
 # Exercises
 
-(have a handout)
+1.  Remove all horizontal rules from a document.
+
+1.  Promote all level 2 headers to level 1,
+level 3 to level 2, etc.
+
+1.  Create a mechanism for including the contents of files
+in specially marked markdown code blocks.
+
+1.  Find all code blocks with class `python` and run the
+python interpreter on them.  Append a separate code block
+with class `output` below each Python code block, containing
+the output.
+
+1.  Provide a simple markdown way to create ruby text, a way
+to mark up Chinese letters phonologically in Japanese texts:
+
+        <ruby>ご<rt></rt>飯<rp>（</rp><rt>はん</rt><rp>）</rp></ruby>
+
+1.  For LaTeX users:  Create a filter that allows you to use tikz
+diagrams in HTML (including HTML slide shows).
+
 
