@@ -126,7 +126,7 @@ Run through `script.txt` in `demo/`.
 
 # Readers and writers
 
-- [Text.Pandoc](doc/pandoc/Text-Pandoc.html)
+[Text.Pandoc](doc/pandoc/Text-Pandoc.html)
 
 <div class="notes">
 
@@ -143,11 +143,11 @@ Pandoc (Meta {unMeta = fromList []}) [Para [Str "dog\8217s"]]
 
 # The Pandoc types
 
-- [Text.Pandoc.Definition](doc/pandoc-types/Text-Pandoc-Definition.html)
+[Text.Pandoc.Definition](doc/pandoc-types/Text-Pandoc-Definition.html)
 
 # Builder
 
-- [Text.Pandoc.Builder](doc/pandoc-types/Text-Pandoc-Builder.html)
+[Text.Pandoc.Builder](doc/pandoc-types/Text-Pandoc-Builder.html)
 
 
 Concatenating lists is slow.  So we use special types `Inlines` and
@@ -166,8 +166,9 @@ No need to open Word for this job! [fuel.hs](./fuel.hs.html)
 
 # Transforming a Pandoc document
 
-- [Text.Pandoc.Generic](doc/pandoc-types/Text-Pandoc-Generic.html)
-- [Text.Pandoc.Walk](doc/pandoc-types/Text-Pandoc-Walk.html)
+[Text.Pandoc.Generic](doc/pandoc-types/Text-Pandoc-Generic.html)
+
+[Text.Pandoc.Walk](doc/pandoc-types/Text-Pandoc-Walk.html)
 
 # Transforming a Pandoc document
 
@@ -197,7 +198,7 @@ f :: Pandoc -> Pandoc
 ```
 
 Since `Pandoc` has `Read` and `Show` instances, we can
-write a pipe like this:
+write a pipe:
 
 ```haskell
 -- f.hs
@@ -210,8 +211,7 @@ And use it thus:
 
 # JSON filters
 
-`Read` and `Show` are really slow.  Better to use JSON serialization
-of Pandoc:
+`Read` and `Show` are really slow.  Better to use JSON serialization:
 
     pandoc -t json -s | runghc fjson.hs | pandoc -f json -s -t latex
 
@@ -221,13 +221,13 @@ To simplify this pattern, we added `--filter`:
 
     pandoc -s -t latex --filter fjson.hs
 
-# Customizing pandoc with JSON filters
+# toJSONFilter
 
-- [Text.Pandoc.JSON](doc/pandoc-types/Text-Pandoc-JSON.html)
+[Text.Pandoc.JSON](doc/pandoc-types/Text-Pandoc-JSON.html)
 
 `toJSONFilter` takes any function `a -> a` or `a -> [a]` or
 `a -> IO a`, where `a` is a Pandoc type, and turns it into a
-JSON pipe.
+JSON filter.
 
 ```haskell
 import Text.Pandoc.JSON
@@ -252,7 +252,16 @@ main :: IO ()
 main = toJSONFilter emphToCaps
 ```
 
-# Making the output sensitive to format
+# Output format conditionalization
+
+`pandoc --filter` passes the name of the output format as
+first argument to the filter.  So the filter's behavior
+can depend on the output format.
+
+`toJSONFilter` makes this easy:  just use a function whose
+first argument is `Maybe Format`.
+
+# A simple example
 
 Emph as <span style="font-variant:small-caps;">SMALLCAPS</span>
 in LaTeX and HTML, ALLCAPS otherwise:

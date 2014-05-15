@@ -1,24 +1,51 @@
-# Exercises
+# Pandoc filter exercises
 
-1.  Remove all horizontal rules from a document.
+1.  Write a filter that capitalizes all regular text in a
+    document, leaving alone URLs and link titles.
 
-1.  Promote all level 2 headers to level 1,
-level 3 to level 2, etc.
+2.  Write a filter that promotes all level 2 headers to level 1,
+    level 3 to level 2, etc.
 
-1.  Create a mechanism for including the contents of files
-in specially marked markdown code blocks.
+3.  Write a filter that removes all horizontal rules from
+    a document.
 
-1.  Find all code blocks with class `python` and run the
-python interpreter on them.  Append a separate code block
-with class `output` below each Python code block, containing
-the output.
+4.  Write a filter that converts strong emphasis to underlining.
+    The filter should work for both HTML and LaTeX.
 
-1.  Provide a simple markdown way to create ruby text, a way
-to mark up Chinese letters phonologically in Japanese texts:
+    Hints:  Pandoc has no `Underline` inline element. But it
+    does have a `RawInline` inline element, which you
+    can use to directly specify what the output should look like
+    in a particular format.  You'll need to make the filter sensitive to
+    the output format, so the function you'll pass to `toJSONFilter`
+    should have the type `Maybe Format -> Inline -> Inline`.
 
-        <ruby>ご<rt></rt>飯<rp>（</rp><rt>はん</rt><rp>）</rp></ruby>
+5.  Write a filter that converts all links in a document into
+    regular text followed by the URL in parentheses.
 
-1.  For LaTeX users:  Create a filter that allows you to use tikz
-diagrams in HTML (including HTML slide shows).
+6.  Create a filter that finds code blocks with attribute
+    `include="FILENAME"`, that is,
 
+        ~~~ {include="myprog.lua"}
+        contents go here...
+        ~~~
 
+    and replaces their contents with the contents of FILENAME.
+
+7.  Create a filter that finds all code blocks with class `python`,
+    that is,
+
+        ``` python
+        # python code here!
+        ```
+
+    runs the python interpreter on their contents, and appends a
+    separate code block (with class `output`) containing the output
+    produced.
+
+8.  Provide a simple markdown way to write ruby markup, a method
+    of marking up Chinese letters phonologically in Japanese texts:
+
+    \includegraphics[height=1in]{images/ruby.png}
+
+9.  For LaTeX users:  Create a filter that allows you to use tikz
+    diagrams in HTML (including HTML slide shows).

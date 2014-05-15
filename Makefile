@@ -1,4 +1,4 @@
-ALL=slides.html fuel.hs.html cng_fuel_chicago.json.html
+ALL=slides.html fuel.hs.html cng_fuel_chicago.json.html exercises.pdf
 
 .PHONY: all clean server
 
@@ -11,7 +11,7 @@ all: $(ALL)
 	Highlight $< > $@
 
 exercises.pdf : exercises.txt
-	pandoc $^ -o $@ -Vfontfamily=bookman -Vgeometry="margin=1in"
+	pandoc $^ -o $@ -Vgeometry="margin=1in" -Vmainfont='Bookman Old Style' --parse-raw --latex-engine=xelatex
 
 slides.html : slides.txt
 	pandoc $^ -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
