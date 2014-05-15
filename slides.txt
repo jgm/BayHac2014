@@ -182,7 +182,7 @@ No need to open Word for this job! [fuel.hs](./fuel.hs.html)
 # Transforming a Pandoc document
 
 ```haskell
-module AllCaps where
+module AllCaps (allCaps) where
 import Text.Pandoc.Definition
 import Data.Char (toUpper)
 
@@ -240,7 +240,7 @@ JSON filter.
 
 ```haskell
 import Text.Pandoc.JSON
-import AllCaps
+import AllCaps (allCaps)
 
 main = toJSONFilter allCaps
 ```

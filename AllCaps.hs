@@ -1,4 +1,4 @@
-module AllCaps where
+module AllCaps (allCaps) where
 import Text.Pandoc.Definition
 import Data.Char (toUpper)
 

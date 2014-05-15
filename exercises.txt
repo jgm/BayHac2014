@@ -1,4 +1,4 @@
-# Pandoc filter exercises
+## Pandoc filter exercises
 
 1.  Write a filter that capitalizes all regular text in a
     document, leaving alone URLs and link titles.
@@ -43,9 +43,72 @@
     produced.
 
 8.  Provide a simple markdown way to write ruby markup, a method
-    of marking up Chinese letters phonologically in Japanese texts:
+    of providing phonetic transliterations above Chinese and
+    Japanese characters:
 
-    \ ![](images/ruby.png)
+    \ ![](images/ruby.pdf)
 
-9.  For LaTeX users:  Create a filter that allows you to use tikz
-    diagrams in HTML (including HTML slide shows).
+9.  For LaTeX users:  Create a filter that allows you to use
+    inline tikz diagrams in markdown.  Hint 1:  They already work with
+    LaTeX output, if you include `\usepackage{tikz}` in your template.
+    Make them work with HTML, including HTML slide show formats and epub.
+    Hint 2:  You can use pdflatex and ImageMagick to generate the
+    images.  Read up on `\documentclass{standalone}`.
+
+\newpage
+
+## Code samples
+
+1.  `AllCaps.hs`
+
+    ``` haskell
+    module AllCaps (allCaps) where
+    import Text.Pandoc.Definition
+    import Data.Char (toUpper)
+
+    allCaps :: Inline -> Inline
+    allCaps (Str xs) = Str $ map toUpper xs
+    allCaps x = x
+    ```
+
+2.  `caps.hs`:  run with `pandoc --filter ./caps.hs`
+
+    ```haskell
+    import Text.Pandoc.JSON
+    import AllCaps (allCaps)
+
+    main = toJSONFilter allCaps
+    ```
+
+3.  `emphToCaps.hs`
+
+    ```haskell
+    import Text.Pandoc.JSON
+    import Text.Pandoc.Walk
+    import AllCaps (allCaps)
+
+    emphToCaps :: Inline -> [Inline]
+    emphToCaps (Emph xs) = walk allCaps xs
+    emphToCaps x = [x]
+
+    main :: IO ()
+    main = toJSONFilter emphToCaps
+    ```
+
+4.  `emphToCaps2.hs`
+
+    ```haskell
+    import Text.Pandoc.JSON
+    import Text.Pandoc.Walk
+    import AllCaps (allCaps)
+
+    emphToCaps :: Maybe Format -> Inline -> [Inline]
+    emphToCaps (Just f) (Emph xs)
+      | f == Format "html" || f == Format "latex" = [SmallCaps xs]
+    emphToCaps _ (Emph xs) = walk allCaps xs
+    emphToCaps _ x = [x]
+
+    main :: IO ()
+    main = toJSONFilter emphToCaps
+    ```
+
