@@ -45,6 +45,7 @@ pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.docx \
 # then try a different format
 
 pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.org
+e sample2.org
 
 # source code highlighting
 
