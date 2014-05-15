@@ -16,7 +16,9 @@ exercises.pdf : exercises.txt
 slides.html : slides.txt
 	pandoc $^ -o $@ -t revealjs --self-contained --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
 
+# for speaker notes:
 server:
 	python -m SimpleHTTPServer
+
 clean:
 	rm $(ALL)

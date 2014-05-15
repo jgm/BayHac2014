@@ -91,7 +91,7 @@ other features, so I extended pandoc's markdown dialect.  The project
 provided hours of pleasant procrastination.
 </div>
 
------
+# First release
 
 ![](images/first-pandoc-web-page.png)
 
@@ -179,7 +179,7 @@ No need to open Word for this job! [fuel.hs](./fuel.hs.html)
 
 [Text.Pandoc.Walk](doc/pandoc-types/Text-Pandoc-Walk.html)
 
-# Transforming a Pandoc document
+# Example: `walk`
 
 ```haskell
 module AllCaps (allCaps) where
@@ -245,7 +245,7 @@ import AllCaps (allCaps)
 main = toJSONFilter allCaps
 ```
 
-# A simple example
+# Example: `emphToCaps.hs`
 
 ```haskell
 -- pandoc --filter ./emphToCaps.hs
@@ -270,10 +270,10 @@ can depend on the output format.
 `toJSONFilter` makes this easy:  just use a function whose
 first argument is `Maybe Format`.
 
-# A simple example
+# Example:  `emphToCaps2.hs`
 
-Emph as <span style="font-size: 80%;">SMALLCAPS</span>
-in LaTeX and HTML, ALLCAPS otherwise:
+Emph as <span style="font-variant:small-caps;">Small Caps</span>
+in LaTeX and HTML, ALL CAPS otherwise:
 
 ```haskell
 -- pandoc --filter ./emphToCaps2.hs
