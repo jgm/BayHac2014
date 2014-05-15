@@ -36,15 +36,13 @@ createLetter stations = doc $
       , plain (text $ address station)
       , plain (mconcat $ intersperse linebreak $ map text $ cardsAccepted station)
       ]
-    toStationItem station = para $
-      strong (text (name station)) <>
-      ", " <> text (address station) <> "."
 
 main :: IO ()
 main = do
-  json <- BL.getContents
+  json <- BL.readFile "cng_fuel_chicago.json"
   let letter = case decode json of
                     Just stations -> createLetter [s | s <- stations,
                                         "Voyager" `elem` cardsAccepted s]
                     Nothing       -> error "Could not decode JSON"
   BL.writeFile "letter.docx" =<< writeDocx def letter
+  putStrLn "Created letter.docx"
