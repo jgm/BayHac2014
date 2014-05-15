@@ -293,4 +293,4 @@ main = toJSONFilter emphToCaps
 
 # Exercises
 
-[exercises.pdf](exercises.pdf)
+<http://johnmacfarlane.net/BayHac2014-exercises.pdf>

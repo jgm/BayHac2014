@@ -32,7 +32,6 @@
     and replaces their contents with the contents of FILENAME.
 
 7.  Create a filter that finds all code blocks with class `python`,
-    that is,
 
         ``` python
         # python code here!
