@@ -14,7 +14,7 @@ exercises.pdf : exercises.txt
 	pandoc $^ -o $@ -Vgeometry="margin=1in" --parse-raw
 
 slides.html : slides.txt
-	pandoc $^ -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
+	pandoc $^ -o $@ -t revealjs --self-contained --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
 
 server:
 	python -m SimpleHTTPServer
