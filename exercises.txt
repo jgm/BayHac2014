@@ -45,7 +45,7 @@
 8.  Provide a simple markdown way to write ruby markup, a method
     of marking up Chinese letters phonologically in Japanese texts:
 
-    \includegraphics[height=1in]{images/ruby.png}
+    \ ![](images/ruby.png)
 
 9.  For LaTeX users:  Create a filter that allows you to use tikz
     diagrams in HTML (including HTML slide shows).

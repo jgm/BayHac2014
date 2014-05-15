@@ -109,7 +109,6 @@ developer, and I've worked on pandoc in my spare time ever since.
 > - texmath
 > - pandoc-citeproc (citeproc-hs)
 > - gitit
-> - filestore
 
 # The command-line tool
 
@@ -144,6 +143,16 @@ Pandoc (Meta {unMeta = fromList []}) [Para [Str "dog\8217s"]]
 # The Pandoc types
 
 [Text.Pandoc.Definition](doc/pandoc-types/Text-Pandoc-Definition.html)
+
+. . .
+
+You can use `pandoc -t native` and `pandoc -f native` to explore:
+
+```
+% echo "[*link*](/foo)" | pandoc -t native
+[Para [Link [Emph [Str "link"]] ("/foo","")]]
+```
+
 
 # Builder
 
@@ -263,7 +272,7 @@ first argument is `Maybe Format`.
 
 # A simple example
 
-Emph as <span style="font-variant:small-caps;">SMALLCAPS</span>
+Emph as <span style="font-size: 80%;">SMALLCAPS</span>
 in LaTeX and HTML, ALLCAPS otherwise:
 
 ```haskell
@@ -284,4 +293,4 @@ main = toJSONFilter emphToCaps
 
 # Exercises
 
-
+[exercises.pdf](exercises.pdf)

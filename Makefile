@@ -11,7 +11,7 @@ all: $(ALL)
 	Highlight $< > $@
 
 exercises.pdf : exercises.txt
-	pandoc $^ -o $@ -Vgeometry="margin=1in" -Vmainfont='Bookman Old Style' --parse-raw --latex-engine=xelatex
+	pandoc $^ -o $@ -Vgeometry="margin=1in" --parse-raw
 
 slides.html : slides.txt
 	pandoc $^ -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
