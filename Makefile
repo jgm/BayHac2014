@@ -10,8 +10,11 @@ all: $(ALL)
 %.json.html: %.json
 	Highlight $< > $@
 
+exercises.pdf : exercises.txt
+	pandoc $^ -o $@ -Vfontfamily=bookman -Vgeometry="margin=1in"
+
 slides.html : slides.txt
-	pandoc $< -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
+	pandoc $^ -o $@ -t revealjs --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
 
 server:
 	python -m SimpleHTTPServer

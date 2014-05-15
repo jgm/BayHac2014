@@ -1,0 +1,24 @@
+# Exercises
+
+1.  Remove all horizontal rules from a document.
+
+1.  Promote all level 2 headers to level 1,
+level 3 to level 2, etc.
+
+1.  Create a mechanism for including the contents of files
+in specially marked markdown code blocks.
+
+1.  Find all code blocks with class `python` and run the
+python interpreter on them.  Append a separate code block
+with class `output` below each Python code block, containing
+the output.
+
+1.  Provide a simple markdown way to create ruby text, a way
+to mark up Chinese letters phonologically in Japanese texts:
+
+        <ruby>ご<rt></rt>飯<rp>（</rp><rt>はん</rt><rp>）</rp></ruby>
+
+1.  For LaTeX users:  Create a filter that allows you to use tikz
+diagrams in HTML (including HTML slide shows).
+
+
