@@ -125,6 +125,177 @@ but let's first have a quick demo of the command-line tool.
 Run through `script.txt` in `demo/`.
 </div>
 
+----
+
+By default pandoc works as a pipe, reading from stdin and writing to
+stdout.  Try it:
+
+    pandoc
+
+
+Hit Ctrl-D (Ctrl-Z on Windows) when you're finished typing text.
+
+---
+
+You can use options.  This one triggers "smart typography" (quotes,
+dashes, ellipses).
+
+    pandoc --smart
+
+---
+
+Let's convert to latex instead of HTML.
+
+    pandoc --to latex
+
+. . .
+
+Or to mediawiki:
+
+    pandoc --to mediawiki
+
+---
+
+Let's convert a latex file to markdown:
+
+    pandoc -f latex -t markdown example.tex
+
+---
+
+For help and information on which options pandoc supports:
+
+    pandoc --help
+
+More detail can be found in the pandoc
+[README](http://johnmacfarlane.net/pandoc/README.html).  Or:
+
+    man pandoc
+    man pandoc_markdown
+
+---
+
+The `--standalone` or `-s` option creates a standalone document with
+header, footer, and metadata:
+
+    pandoc --standalone --smart -o r.html -t html5 README
+
+. . .
+
+Let's add a table of contents and use some custom CSS:
+
+    pandoc --standalone --smart --toc -o r.html -t html5 \
+      --css my.css README
+
+---
+
+Standalone documents are constructed from templates.  To see the
+default template for a format, use `-D`:
+
+    pandoc -D html5 > my.html5
+
+The template language is documented
+[here](http://johnmacfarlane.net/pandoc/README.html#templates).
+
+---
+
+Let's edit `my.html5` to add a version history before the
+`</header>` tag:
+
+    <ul class="versions">
+    $for(version)$
+    <li>Version $version.number$ ($version.date$): $version.log$</li>
+    $endfor$
+    </ul>
+
+. . .
+
+Now try using the template, with `--mathjax` for nice math:
+
+    pandoc -s -S --template my.html5 -t html5 sample1.txt \
+      -o sample1.html --mathjax
+
+---
+
+We can create a PDF. Pandoc shells out to pdflatex for this.
+
+    pandoc sample1.txt -o sample1.pdf
+
+If you want to use xelatex instead, use `--latex-engine=xelatex`.
+
+---
+
+We can create a word document without opening Word:
+
+    pandoc sample1.txt -o sample1.docx
+
+. . .
+
+or an epub:
+
+    pandoc sample1.txt -t epub3 -o sample1.epub
+
+---
+
+Pandoc can process citations using bibtex bibliographies (or several
+other formats).  Take a look at [`sample2.txt`](demo/sample2.txt) and
+[`sample2.bib`](demo/sample2.bib).
+
+We tell it to use `pandoc-citeproc` as a filter:
+
+    pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.docx
+
+---
+
+Try changing the bibliography style.  Edit
+[`sample2.txt`](demo/sample2.txt) to uncomment
+
+    csl: chicago-fullnote-bibliography.csl.
+
+Then:
+
+    pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.docx
+
+---
+
+Citations work in all formats supported by pandoc:
+
+    pandoc -s --filter pandoc-citeproc sample2.txt -o sample2.org
+    emacs sample2.org
+
+---
+
+Source code highlighting is automatic for marked code blocks.
+It works in HTML, PDF, and docx:
+
+    pandoc -s sample3.txt -o sample3.html
+    pandoc -s sample3.txt -o sample3.pdf
+    pandoc -s sample3.txt -o sample3.docx
+
+. . .
+
+You can change the highlighting style:
+
+    pandoc -s sample3.txt -o sample3.html --highlight-style=monochrome
+
+---
+
+Pandoc has native support for literate haskell.
+
+[`paste.lhs`](demo/paste.lhs) is a literate Haskell file with markdown
+text:
+
+    ghci paste.lhs
+    pandoc paste.lhs -f markdown+lhs -t html -s -o paste.html
+    pandoc paste.lhs -f markdown+lhs -t latex+lhs -s -o paste.lhs.tex
+
+---
+
+Pandoc can also convert to and from haddock, though this needs updating
+in light of recent changes in haddock's markup.
+
+    pandoc -f markdown -t haddock
+    pandoc -f haddock -t markdown
+
 # A tour of pandoc's API
 
 # Readers and writers
