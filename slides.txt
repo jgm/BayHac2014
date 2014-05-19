@@ -296,6 +296,14 @@ in light of recent changes in haddock's markup.
     pandoc -f markdown -t haddock
     pandoc -f haddock -t markdown
 
+---
+
+Pandoc also supports beamer and several HTML slide show formats.
+[This slide show](slides.txt) was written with pandoc:
+
+    pandoc slides.txt -o slides.html -t revealjs --css slides.css \
+      -S --highlight-style=espresso
+
 # A tour of pandoc's API
 
 # Readers and writers
