@@ -19,6 +19,9 @@ reveal.js:
 slides.html : slides.txt reveal.js
 	pandoc $< -o $@ -t revealjs --css slides.css -S --highlight-style=espresso
 
+upload:
+	rsync -av --exclude '.git/**' * website:html/BayHac2014/
+
 # for speaker notes:
 server:
 	python -m SimpleHTTPServer
