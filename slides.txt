@@ -198,8 +198,27 @@ The template language is documented
 
 ---
 
-Let's edit `my.html5` to add a version history before the
-`</header>` tag:
+[`sample1.txt`](demo/sample1.txt) contains some nice structured
+metadata.  This is YAML but with strings interpreted as markdown.
+
+    ---
+    title: My demonstration
+    author:
+     - Kurt Gödel
+     - Haskell Curry
+    version:
+     - number: 1.0
+       date: July 13, 1945
+       log:  Initial commit
+     - number: 1.1
+       date: August 14, 1946
+       log:  Added some math
+    ---
+
+---
+
+The metadata has a nice version history.
+Let's edit `my.html5` to include this before the `</header>` tag:
 
     <ul class="versions">
     $for(version)$
@@ -207,9 +226,9 @@ Let's edit `my.html5` to add a version history before the
     $endfor$
     </ul>
 
-. . .
+---
 
-Now try using the template, with `--mathjax` for nice math:
+Let's try our custom template:
 
     pandoc -s -S --template my.html5 -t html5 sample1.txt \
       -o sample1.html --mathjax
