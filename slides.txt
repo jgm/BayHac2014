@@ -247,6 +247,9 @@ We can create a word document without opening Word:
 
     pandoc sample1.txt -o sample1.docx
 
+Note that the TeX math in the markdown file gets converted to
+native Word equations.
+
 . . .
 
 or an epub:
