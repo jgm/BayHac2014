@@ -1,6 +1,6 @@
 ALL=slides.html fuel.hs.html cng_fuel_chicago.json.html exercises.pdf
 
-.PHONY: all clean server
+.PHONY: all clean server web upload
 
 all: $(ALL)
 
@@ -13,12 +13,16 @@ all: $(ALL)
 exercises.pdf : exercises.txt
 	pandoc $^ -o $@ -Vgeometry="margin=1in" --parse-raw
 
-slides.html : slides.txt
-	pandoc $^ -o $@ -t revealjs --self-contained --css slides.css -S $(SELFCONTAINED) --highlight-style=espresso
+reveal.js:
+	git clone https://github.com/hakimel/reveal.js
+
+slides.html : slides.txt reveal.js
+	pandoc $< -o $@ -t revealjs --css slides.css -S --highlight-style=espresso
 
 # for speaker notes:
 server:
 	python -m SimpleHTTPServer
 
 clean:
-	rm $(ALL)
+	-rm $(ALL)
+	-rm -r BayHac2014
