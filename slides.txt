@@ -114,6 +114,10 @@ developer, and I've worked on pandoc in my spare time ever since.
 
 A quick demonstration.
 
+    git clone https://github.com/jgm/BayHac2014
+    cd BayHac2014/demo
+    vim script.txt
+
 <div class="notes">
 Our goal is to learn how to use pandoc as a library,
 but let's first have a quick demo of the command-line tool.
@@ -127,8 +131,9 @@ Run through `script.txt` in `demo/`.
 
 [Text.Pandoc](doc/pandoc/Text-Pandoc.html)
 
-<div class="notes">
+. . .
 
+``` haskell
 Prelude> :m + Text.Pandoc
 Text.Pandoc> let doc = readMarkdown def "*hi*"
 Text.Pandoc> doc
@@ -137,8 +142,7 @@ Text.Pandoc> writeLaTeX def doc
 "\\emph{hi}"
 Text.Pandoc> readMarkdown def{readerSmart = True} "dog's"
 Pandoc (Meta {unMeta = fromList []}) [Para [Str "dog\8217s"]]
-
-</div>
+```
 
 # The Pandoc types
 
@@ -293,4 +297,5 @@ main = toJSONFilter emphToCaps
 
 # Exercises
 
-<http://johnmacfarlane.net/BayHac2014-exercises.pdf>
+<http://johnmacfarlane.net/BayHac2014/exercises.pdf>
+
