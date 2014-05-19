@@ -11,6 +11,7 @@ version:
    date: August 14,1946
    log:  Added some math
 bibliography: sample2.bib
+csl: chicago-fullnote-bibliography.csl
 ---
 
 # Here is some math

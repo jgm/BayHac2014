@@ -16,8 +16,7 @@
     does have a `RawInline` inline element, which you
     can use to directly specify what the output should look like
     in a particular format.  You'll need to make the filter sensitive to
-    the output format, so the function you'll pass to `toJSONFilter`
-    should have the type `Maybe Format -> Inline -> Inline`.
+    the output format.
 
 5.  Write a filter that converts all links in a document into
     regular text followed by the URL in parentheses.
@@ -56,7 +55,7 @@
 
 \newpage
 
-## Code samples
+## Code examples
 
 1.  `AllCaps.hs`
 

@@ -8,7 +8,7 @@ version:
    date: July 13, 1945
    log:  Initial commit
  - number: 1.1
-   date: August 14,1946
+   date: August 14, 1946
    log:  Added some math
 ---
 
