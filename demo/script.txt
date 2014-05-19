@@ -87,13 +87,13 @@ emacs sample2.org
 
 # Source code highlighting is automatic for marked code blocks:
 
-pandoc -s sample3.txt -s -o sample3.html
-pandoc -s sample3.txt -s -o sample3.pdf
-pandoc -s sample3.txt -s -o sample3.docx
+pandoc -s sample3.txt -o sample3.html
+pandoc -s sample3.txt -o sample3.pdf
+pandoc -s sample3.txt -o sample3.docx
 
 # You can change the highlighting style:
 
-pandoc -s sample3.txt -s -o sample3.html --highlight-style=monochrome
+pandoc -s sample3.txt -o sample3.html --highlight-style=monochrome
 
 # Pandoc has native support for literate haskell:
 
